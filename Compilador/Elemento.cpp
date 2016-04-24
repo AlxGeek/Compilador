@@ -21,10 +21,7 @@ Elemento::~Elemento()
 std::string Elemento::getXmlApertura()
 {
 	switch (tipo)
-	{
-	case T_DELIMITADOR:
-		return "<DELIMITADOR>";
-
+	{	
 	case T_ADICION:
 		return "<SUMA value=\"" + simbolo + "\">";
 	case T_MULTIPLICACION:

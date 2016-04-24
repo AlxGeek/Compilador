@@ -17,6 +17,7 @@ public:
 
 private:
 	int position; 	
+	int indent;
 	bool noError;
 	std::string cadena;
 

@@ -28,7 +28,7 @@ bool Sintactico::esValida()
 
 Node * Sintactico::getTree()
 {
-	//return sentencias();
+	return NULL; //sentencias();
 }
 
 void Sintactico::comprueba(std::string simbolo) {

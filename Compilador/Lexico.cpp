@@ -6,6 +6,7 @@ Lexico::Lexico(std::string _cadena)
 	cadena = _cadena;
 	noError = true;
 	createLexico();
+	indent = 0;
 }
 
 
@@ -28,21 +29,22 @@ bool Lexico::nextPosition()
 	if (position < (int)(cadena.size() - 1)) {
 		position++;
 		if ((int)cadena[position] < 0 || (int)cadena[position] > 255)
-		{			
+		{
 			noError = false;
 			return false;
 		}
 		return true;
-	}	
+	}
 	return false;
 }
 
 void Lexico::createLexico()
 {
 	bool sig;
+	int nTab = 0;
 	while (noError && (sig = nextPosition()))
 	{
-		sig = false;		
+		sig = false;
 		if (isdigit(cadena[position])) {
 			elementos.push_back(Elemento(std::string(1, cadena[position]), T_ENTERO));
 			while (nextPosition()) {
@@ -50,7 +52,7 @@ void Lexico::createLexico()
 				{
 					elementos.back().simbolo.append(1, cadena[position]);
 				}
-				else if(cadena[position] == '.'){	
+				else if (cadena[position] == '.') {
 					elementos.back().tipo = T_FLOTANTE;
 					while ((sig = nextPosition()) && isdigit(cadena[position]))
 					{
@@ -63,7 +65,7 @@ void Lexico::createLexico()
 				{
 					position--;
 					break;
-				}				
+				}
 			}
 		}
 		else if (isalpha(cadena[position]) || cadena[position] == '_') {
@@ -77,14 +79,30 @@ void Lexico::createLexico()
 		else {
 			switch (cadena[position]) {
 			case ' ':
+			case '\t':
 				break;
 			case '\n':
 			case '\r':
-				elementos.push_back(Elemento(std::string(1, cadena[position]), T_SALTO_LINEA));
-				break;			
-			case '\t':
-				elementos.push_back(Elemento(std::string(1, cadena[position]), T_TAB));
-				break;		
+				elementos.push_back(Elemento(std::string(1, cadena[position]), T_SALTO_LINEA));				
+				nTab = 0;
+				while ((sig = nextPosition()) && cadena[position] == '\t')
+				{
+					nTab++;
+				}
+				if (sig)
+				{
+					position--;
+				}
+				if (indent > nTab)
+				{
+					elementos.push_back(Elemento(std::string(1, cadena[position]), T_DEDENT));
+				}
+				else if (indent < nTab)
+				{
+					elementos.push_back(Elemento(std::string(1, cadena[position]), T_INDENT));
+				}
+				indent = nTab;
+				break;							
 			case ':':
 				elementos.push_back(Elemento(std::string(1, cadena[position]), T_DOS_PUNTOS));
 				break;
