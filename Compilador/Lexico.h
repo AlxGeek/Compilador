@@ -15,6 +15,8 @@ public:
 	
 	bool esValida();
 
+	void printElementos();
+
 private:
 	int position; 	
 	int indent;

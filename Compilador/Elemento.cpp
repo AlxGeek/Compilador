@@ -5,6 +5,7 @@
 Elemento::Elemento()
 {
 	simbolo = "";
+	//tipo = T_ERROR;
 }
 
 Elemento::Elemento(std::string _simbolo, Tipos _tipo)
@@ -21,9 +22,13 @@ Elemento::~Elemento()
 std::string Elemento::getXmlApertura()
 {
 	switch (tipo)
-	{	
+	{
 	case T_ADICION:
 		return "<SUMA value=\"" + simbolo + "\">";
+
+	case T_SIGNO:
+		return "<SIGNO value=\"" + simbolo + "\">";
+
 	case T_MULTIPLICACION:
 		return "<MULT value=\"" + simbolo + "\">";
 
@@ -37,16 +42,16 @@ std::string Elemento::getXmlApertura()
 		return "<OR>";
 
 	case T_MAYOR_MENOR_QUE:
-		return "<MAYOR_MENOR_QUE value=\"" + specialToXml(simbolo) + "\">";
+		return "<EXPRESION value=\"" + specialToXml(simbolo) + "\">";
 
 	case T_DIFERENTE:
-		return "<DIFERENTE>";
+		return "<EXPRESION value=\"!=\">";
 
 	case T_MAYOR_MENOR_IGUAL_QUE:
-		return "<MAYOR_MENOR_IGUAL_QUE value=\"" + specialToXml(simbolo) + "=\">";
+		return "<EXPRESION value=\"" + specialToXml(simbolo) + "=\">";
 
 	case T_IGUAL_QUE:
-		return "<IGUAL_QUE>";
+		return "<EXPRESION value=\"==\">";
 
 	case T_NOT:
 		return "<NOT>";
@@ -60,8 +65,26 @@ std::string Elemento::getXmlApertura()
 	case T_ENTERO:
 		return "<ENTERO>" + simbolo;
 
+	case T_FLOTANTE:
+		return "<REAL>" + simbolo;
+
 	case T_ASIGNACION:
 		return "<ASIGNACION>";
+
+	case T_BLOQUE:
+		return "<BLOQUE>";
+
+	case T_ELSE:
+		return "<OTRO>";
+
+	case T_WHILE:
+		return "<MIENTRAS>";
+
+	case T_IF:
+		return "<SI>";
+
+	case T_PRINT:
+		return "<IMPRIME>\n<EXPRESION>";
 
 	case T_ID:
 		return "<ID>" + simbolo;
@@ -81,6 +104,10 @@ std::string Elemento::getXmlCierre()
 	{
 	case T_ADICION:
 		return "</SUMA>";
+
+	case T_SIGNO:
+		return "</SIGNO>";
+
 	case T_MULTIPLICACION:
 		return "</MULT>";
 
@@ -94,16 +121,16 @@ std::string Elemento::getXmlCierre()
 		return "</OR>";
 
 	case T_MAYOR_MENOR_QUE:
-		return "</MAYOR_MENOR_QUE>";
+		return "</EXPRESION>";
 
 	case T_DIFERENTE:
-		return "</DIFERENTE>";
+		return "</EXPRESION>";
 
 	case T_MAYOR_MENOR_IGUAL_QUE:
-		return "</MAYOR_MENOR_IGUAL_QUE>";
+		return "</EXPRESION>";
 
 	case T_IGUAL_QUE:
-		return "</IGUAL_QUE>";
+		return "</EXPRESION>";
 
 	case T_NOT:
 		return "</NOT>";
@@ -117,10 +144,28 @@ std::string Elemento::getXmlCierre()
 	case T_ENTERO:
 		return "</ENTERO>";
 
+	case T_FLOTANTE:
+		return "</REAL>";
+
+	case T_ELSE:
+		return "</OTRO>";
+
 	case T_ASIGNACION:
 		return "</ASIGNACION>";
 
-	case T_ID:
+	case T_BLOQUE:
+		return "</BLOQUE>";
+
+	case T_WHILE:
+		return "</MIENTRAS>";
+
+	case T_IF:
+		return "</SI>";
+
+	case T_PRINT:
+		return "</EXPRESION>\n</IMPRIME>";
+
+	case T_ID:	
 		return "</ID>";
 
 	case T_ERROR:

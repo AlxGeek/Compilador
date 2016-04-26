@@ -146,18 +146,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Constantes.cpp" />
     <ClCompile Include="Elemento.cpp" />
     <ClCompile Include="Lexico.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="Semantico.cpp" />
     <ClCompile Include="Sintactico.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Variable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constantes.h" />
     <ClInclude Include="Elemento.h" />
     <ClInclude Include="Lexico.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="Semantico.h" />
     <ClInclude Include="Sintactico.h" />
+    <ClInclude Include="Variable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

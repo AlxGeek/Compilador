@@ -5,8 +5,8 @@ Lexico::Lexico(std::string _cadena)
 	position = -1;
 	cadena = _cadena;
 	noError = true;
-	createLexico();
 	indent = 0;
+	createLexico();	
 }
 
 
@@ -22,6 +22,12 @@ std::vector<Elemento> Lexico::getElementos()
 bool Lexico::esValida()
 {
 	return noError;
+}
+
+void Lexico::printElementos()
+{
+	for (auto i : elementos)
+		std::cout << "Simbolo: '" << i.simbolo << "' Tipo: " << tipoToString(i.tipo) << std::endl;
 }
 
 bool Lexico::nextPosition()
@@ -54,6 +60,7 @@ void Lexico::createLexico()
 				}
 				else if (cadena[position] == '.') {
 					elementos.back().tipo = T_FLOTANTE;
+					elementos.back().simbolo.append(1, cadena[position]);
 					while ((sig = nextPosition()) && isdigit(cadena[position]))
 					{
 						elementos.back().simbolo.append(1, cadena[position]);
@@ -83,7 +90,11 @@ void Lexico::createLexico()
 				break;
 			case '\n':
 			case '\r':
-				elementos.push_back(Elemento(std::string(1, cadena[position]), T_SALTO_LINEA));				
+				elementos.push_back(Elemento(std::string(1, cadena[position]), T_SALTO_LINEA));
+
+				while ((sig = nextPosition()) && cadena[position] == '\n' || cadena[position] == '\r');
+				if (sig) position--;
+
 				nTab = 0;
 				while ((sig = nextPosition()) && cadena[position] == '\t')
 				{
@@ -95,14 +106,16 @@ void Lexico::createLexico()
 				}
 				if (indent > nTab)
 				{
-					elementos.push_back(Elemento(std::string(1, cadena[position]), T_DEDENT));
+					for (int a = 0; a < indent - nTab; a++)
+						elementos.push_back(Elemento(std::string(1, cadena[position]), T_DEDENT));
 				}
 				else if (indent < nTab)
 				{
-					elementos.push_back(Elemento(std::string(1, cadena[position]), T_INDENT));
+					for (int a = 0; a < nTab - indent; a++)
+						elementos.push_back(Elemento(std::string(1, cadena[position]), T_INDENT));
 				}
 				indent = nTab;
-				break;							
+				break;
 			case ':':
 				elementos.push_back(Elemento(std::string(1, cadena[position]), T_DOS_PUNTOS));
 				break;

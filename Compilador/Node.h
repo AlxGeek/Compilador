@@ -2,7 +2,11 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 #include "Elemento.h"
+#include "Semantico.h"
+
+class Semantico;
 
 class Node
 {
@@ -17,5 +21,8 @@ public:
 
 	Node* left;
 	Node* right;
-	Elemento data;
+	Elemento data;	
+
+	TipoSemantico getTipoSemantico();
+
 };
